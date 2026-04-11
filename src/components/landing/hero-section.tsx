@@ -1,8 +1,8 @@
 "use client"
 
-import { motion } from "motion/react";
-import demoimg from "@/public/deadpool-pfp.png";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import demoimg from "@/public/deadpool-pfp.png";
 
 const cards = [
   { img: demoimg, rotate: -18, x: -200, y: 30 },

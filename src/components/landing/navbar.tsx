@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { User, Settings } from "lucide-react";
+import { ThemeToggle } from "../theme/toggle-theme";
 
 const navLinks = ["Colleges", "Mentor", "AI"];
 
@@ -40,6 +41,7 @@ const Navbar = () => {
         <button className="p-2 rounded-full hover:bg-secondary transition-colors">
           <Settings size={18} className="text-foreground" />
         </button>
+        <ThemeToggle />
       </div>
     </motion.nav>
   );
