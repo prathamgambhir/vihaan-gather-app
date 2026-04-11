@@ -13,7 +13,7 @@ const images = [
 
 const ShowcaseSection = () => {
   return (
-    <section className="py-24 bg-secondary/40">
+    <section className="py-24">
       <div className="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <motion.span
@@ -22,7 +22,7 @@ const ShowcaseSection = () => {
             viewport={{ once: true }}
             className="text-xs font-body tracking-[0.2em] uppercase text-muted-foreground mb-4 block"
           >
-            E-Commerce
+            Discover
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -31,7 +31,7 @@ const ShowcaseSection = () => {
             transition={{ duration: 0.7 }}
             className="text-4xl md:text-6xl font-display leading-[1.1] text-foreground mb-6"
           >
-            Showcase, Sell,
+            Find Your People. Build Your Story
             <br />
             <span className="text-highlight">&amp; acquire arts to</span>
             <br />

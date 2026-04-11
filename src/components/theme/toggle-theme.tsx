@@ -20,10 +20,8 @@ export const ThemeToggle = () => {
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="border border-black/20 rounded-full inset-shadow-sm inset-shadow-black/10 dark:border-white/10 dark:inset-shadow-white/10 cursor-pointer"
+    <button
+      className="size-8 flex items-center justify-center border border-black/20 rounded-full inset-shadow-sm inset-shadow-black/10 dark:border-white/10 dark:inset-shadow-white/10 cursor-pointer"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       {theme === "dark" ? (
@@ -31,6 +29,6 @@ export const ThemeToggle = () => {
       ) : (
         <MoonIcon className="size-5 text-neutral-800 dark:text-white/90 rotate-360 opacity-100 dark:rotate-0 dark:opacity-0 transition-all duration-500" />
       )}
-    </Button>
+    </button>
   );
 };
