@@ -3,8 +3,11 @@
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Calendar, MapPin, Trophy, Users, ArrowUpRight, Clock, ArrowLeft, Info } from "lucide-react";
+import { Calendar, MapPin, Trophy, Users, ArrowUpRight, Clock, ArrowLeft, Info, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+import { getEventById } from "@/src/app/actions/events";
+import { getSocietyById } from "@/src/app/actions/societies";
 
 // -------------------------------------------------------------
 // Original user code retained: EventCard
@@ -149,27 +152,45 @@ export function EventCard({ event, collegeName, className }: EventCardProps) {
 
 export default function EventDetailPage() {
   const params = useParams();
-  const collegeName = (params.college_name || params.collegeName) as string;
-  const societyNameSlug = (params.society_name || params.societyName) as string;
+  const collegeId = (params.college_name || params.collegeName) as string;
+  const societyId = (params.society_name || params.societyName) as string;
   const eventId = (params.event_id || params.eventId) as string;
 
-  // Mock data mapping (to represent the event until API hooking is done)
+  const [eventData, setEventData] = useState<any>(null);
+  const [societyData, setSocietyData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      getEventById(eventId),
+      getSocietyById(societyId)
+    ]).then(([event, society]) => {
+      setEventData(event);
+      setSocietyData(society || { name: 'Unknown Society' });
+      setLoading(false);
+    });
+  }, [eventId, societyId]);
+
+  if (loading) return <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-black dark:text-white" /></div>;
+
+  if (!eventData) return <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center text-white font-bold text-2xl">Event not found</div>;
+
   const eventDetails = {
-    id: eventId,
-    title: "Annual Tech Symposium",
-    date: "15 Oct 2026",
-    time: "10:00 AM - 05:00 PM",
-    location: "Main Auditorium",
-    category: "Competition",
-    description: "Join us for our flagship technical event featuring hackathons, guest lectures, and more. This symposium brings together bright minds to solve real-world problems. Participants will have the opportunity to network with industry leaders, showcase their skills, and win exciting prizes.",
-    status: "Upcoming",
-    mode: "Offline",
-    isFree: false,
-    entryFee: "₹500",
-    teamSize: "1-4 Members",
-    prizePool: "₹50,000",
-    tags: ["Technology", "Innovation", "Networking"],
-    organizer: societyNameSlug ? societyNameSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : "Society",
+    id: eventData._id || eventData.id,
+    title: eventData.title || "Event Title",
+    date: eventData.startDate ? new Date(eventData.startDate).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' }) : "TBA",
+    time: eventData.time || "TBA",
+    location: eventData.location || "TBA",
+    category: eventData.category || "General",
+    description: eventData.description || "No description available.",
+    status: (eventData.endDate && new Date(eventData.endDate) < new Date()) ? "Completed" : "Upcoming",
+    mode: eventData.isVirtual ? "Online" : "Offline",
+    isFree: !eventData.price || eventData.price === 0,
+    entryFee: eventData.price ? `₹${eventData.price}` : "Free",
+    teamSize: "Solo/Team",
+    prizePool: "TBA",
+    tags: [eventData.category || "Event", "College"],
+    organizer: societyData?.name || "Society",
   };
 
   return (
@@ -178,7 +199,7 @@ export default function EventDetailPage() {
         
         {/* Back Navigation */}
         <Link 
-          href={`/colleges/${collegeName}/${societyNameSlug}`}
+          href={`/colleges/${collegeId}/${societyId}`}
           className="inline-flex items-center gap-2 text-neutral-500 hover:text-black dark:hover:text-white transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />

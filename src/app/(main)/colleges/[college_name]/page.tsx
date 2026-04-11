@@ -1,50 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, ArrowLeft } from "lucide-react";
+import { ExternalLink, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-
-const collegeNames: Record<string, string> = {
-  dtu: "Delhi Technological University",
-  nsut: "Netaji Subhas University of Technology",
-  "iit-delhi": "Indian Institute of Technology Delhi",
-  "iit-bombay": "Indian Institute of Technology Bombay",
-  "iit-madras": "Indian Institute of Technology Madras",
-  "iit-kanpur": "Indian Institute of Technology Kanpur",
-  "bits-pilani": "BITS Pilani",
-  "nit-trichy": "NIT Tiruchirappalli",
-};
+import { getCollegeById, getSocieties } from "@/src/app/actions/societies";
 
 const genres = ["All", "Technical", "Cultural", "Literary", "Music", "Dance", "Drama", "Sports"];
 
-const societiesData = [
-  { name: "IEEE Student Branch", genre: "Technical", website: "https://ieee.org" },
-  { name: "Debating Society", genre: "Literary", website: "#" },
-  { name: "Music Club", genre: "Music", website: "#" },
-  { name: "Nritya - Dance Society", genre: "Dance", website: "#" },
-  { name: "Coding Club", genre: "Technical", website: "#" },
-  { name: "Dramatics Society", genre: "Drama", website: "#" },
-  { name: "Photography Club", genre: "Cultural", website: "#" },
-  { name: "Robotics Society", genre: "Technical", website: "#" },
-  { name: "Quiz Club", genre: "Literary", website: "#" },
-  { name: "Athletics Club", genre: "Sports", website: "#" },
-  { name: "Fine Arts Society", genre: "Cultural", website: "#" },
-  { name: "Entrepreneurship Cell", genre: "Technical", website: "#" },
-];
-
 const CollegeDetail = () => {
   const params = useParams();
-  const collegeName = (params.college_name || params.collegeName) as string;
+  const collegeId = (params.college_name || params.collegeName) as string;
   const [activeGenre, setActiveGenre] = useState("All");
 
-  const displayName = collegeNames[collegeName] || "University Detail";
-  const shortName = collegeName?.toUpperCase().replace(/-/g, " ") || "";
+  const [collegeDetails, setCollegeDetails] = useState<any>(null);
+  const [societies, setSocieties] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([getCollegeById(collegeId), getSocieties()]).then(([college, allSocieties]) => {
+      setCollegeDetails(college || { name: 'Unknown College', acronym: 'UNK' });
+      const filteredSocs = allSocieties.filter((s: any) => s.collegeId === collegeId);
+      setSocieties(filteredSocs);
+      setLoading(false);
+    });
+  }, [collegeId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-black dark:text-white" />
+      </div>
+    );
+  }
+
+  const displayName = collegeDetails?.name || "University Detail";
+  const shortName = collegeDetails?.acronym || collegeDetails?.name?.substring(0, 3).toUpperCase() || "";
 
   const filtered = activeGenre === "All"
-    ? societiesData
-    : societiesData.filter((s) => s.genre === activeGenre);
+    ? societies
+    : societies.filter((s) => s.category === activeGenre);
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-500">
@@ -103,7 +99,7 @@ const CollegeDetail = () => {
           <AnimatePresence mode="popLayout">
             {filtered.map((society, i) => (
               <motion.div
-                key={society.name}
+                key={society._id || society.id || society.name}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -113,16 +109,18 @@ const CollegeDetail = () => {
               >
                 <div className="flex justify-between items-start mb-6">
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-                    {society.genre}
+                    {society.category || 'General'}
                   </span>
-                  <motion.a
-                    whileHover={{ rotate: 45 }}
-                    href={society.website}
-                    target="_blank"
-                    className="p-2 rounded-full bg-white dark:bg-neutral-800 text-black dark:text-white border border-black/5 dark:border-white/10"
-                  >
-                    <ExternalLink size={14} />
-                  </motion.a>
+                  {society.website && (
+                    <motion.a
+                      whileHover={{ rotate: 45 }}
+                      href={society.website || "#"}
+                      target="_blank"
+                      className="p-2 rounded-full bg-white dark:bg-neutral-800 text-black dark:text-white border border-black/5 dark:border-white/10"
+                    >
+                      <ExternalLink size={14} />
+                    </motion.a>
+                  )}
                 </div>
                 
                 <h3 className="text-2xl font-display font-bold text-black dark:text-white mb-2 leading-tight">
@@ -133,7 +131,7 @@ const CollegeDetail = () => {
                 </p>
 
                 <div className="mt-8 pt-6 border-t border-black/5 dark:border-white/10">
-                  <Link href={`/colleges/${collegeName}/${society.name.toLowerCase().replace(/\s+/g, '-')}`} className="text-xs font-bold uppercase tracking-widest text-black dark:text-white hover:underline">
+                  <Link href={`/colleges/${collegeId}/${society._id || society.id}`} className="text-xs font-bold uppercase tracking-widest text-black dark:text-white hover:underline">
                     View Events →
                   </Link>
                 </div>

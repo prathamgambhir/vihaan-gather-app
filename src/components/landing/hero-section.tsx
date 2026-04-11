@@ -2,16 +2,22 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import demoimg from "@/public/deadpool-pfp.png";
+import college1 from "@/public/college1.jpeg";
+import college2 from "@/public/college2.jpeg";
+import college3 from "@/public/college3.jpeg";
+import college4 from "@/public/college4.jpeg";
+import college5 from "@/public/college5.jpeg";
+import college6 from "@/public/college6.jpeg";
+import college7 from "@/public/college7.jpeg";
 
 const cards = [
-  { img: demoimg, rotate: -18, x: -250, y: 30 },
-  { img: demoimg, rotate: -12, x: -160, y: 10 },
-  { img: demoimg, rotate: -6, x: -70, y: -5 },
-  { img: demoimg, rotate: 0, x: 20, y: -10 },
-  { img: demoimg, rotate: 6, x: 110, y: -5 },
-  { img: demoimg, rotate: 12, x: 200, y: 10 },
-  { img: demoimg, rotate: 18, x: 290, y: 30 },
+  { img: college1, rotate: -18, x: -250, y: 30 },
+  { img: college2, rotate: -12, x: -160, y: 10 },
+  { img: college3, rotate: -6, x: -70, y: -5 },
+  { img: college4, rotate: 0, x: 20, y: -10 },
+  { img: college5, rotate: 6, x: 110, y: -5 },
+  { img: college6, rotate: 12, x: 200, y: 10 },
+  { img: college7, rotate: 18, x: 290, y: 30 },
 ];
 
 const HeroSection = () => {

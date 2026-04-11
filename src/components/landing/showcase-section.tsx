@@ -1,14 +1,17 @@
 "use client"
 
 import { motion } from "motion/react";
-import demoimg from "@/public/deadpool-pfp.png";
+import event1 from "@/public/event1.jpeg";
+import event2 from "@/public/event2.jpeg";
+import event3 from "@/public/event3.jpeg";
+import event4 from "@/public/event4.jpeg";
 import Image from "next/image";
 
 const images = [
-  { img: demoimg, rotate: -8, z: 1 },
-  { img: demoimg, rotate: -3, z: 2 },
-  { img: demoimg, rotate: 4, z: 3 },
-  { img: demoimg, rotate: 10, z: 2 },
+  { img: event1, rotate: -8, z: 1 },
+  { img: event2, rotate: -3, z: 2 },
+  { img: event3, rotate: 4, z: 3 },
+  { img: event4, rotate: 10, z: 2 },
 ];
 
 const ShowcaseSection = () => {

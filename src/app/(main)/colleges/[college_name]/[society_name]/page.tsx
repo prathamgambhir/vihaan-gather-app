@@ -1,73 +1,50 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Calendar, MapPin, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-
-// Mock data
-const eventsData = [
-  {
-    id: 1,
-    title: "Annual Tech Symposium",
-    date: "15 Oct 2026",
-    time: "10:00 AM",
-    location: "Main Auditorium",
-    category: "Competition",
-    description: "Join us for our flagship technical event featuring hackathons, guest lectures, and more.",
-    status: "Upcoming",
-  },
-  {
-    id: 2,
-    title: "Workshop on AI/ML",
-    date: "22 Oct 2026",
-    time: "02:00 PM",
-    location: "Computer Lab 3",
-    category: "Workshop",
-    description: "A hands-on session on the basics of Machine Learning and Artificial Intelligence.",
-    status: "Upcoming",
-  },
-  {
-    id: 3,
-    title: "Alumni Meet 2026",
-    date: "05 Nov 2026",
-    time: "05:00 PM",
-    location: "Student Center",
-    category: "Networking",
-    description: "Connect with our distinguished alumni and learn from their industry experiences.",
-    status: "Upcoming",
-  },
-  {
-    id: 4,
-    title: "Ideathon Finals",
-    date: "20 Sep 2026",
-    time: "09:00 AM",
-    location: "Conference Hall",
-    category: "Competition",
-    description: "Final pitching round for the top 10 teams of the Ideathon.",
-    status: "Completed",
-  }
-];
+import { getCollegeById, getSocietyById } from "@/src/app/actions/societies";
+import { getEvents } from "@/src/app/actions/events";
 
 const categories = ["All", "Competition", "Workshop", "Networking", "Seminar"];
 
 const SocietyDetail = () => {
   const params = useParams();
-  const collegeName = (params.college_name || params.collegeName) as string;
-  const societyNameSlug = (params.society_name || params.societyName) as string;
+  const collegeId = (params.college_name || params.collegeName) as string;
+  const societyId = (params.society_name || params.societyName) as string;
   
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const formattedSocietyName = societyNameSlug 
-    ? societyNameSlug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-    : "Society Detail";
-    
-  const shortCollegeName = collegeName?.toUpperCase().replace(/-/g, " ") || "";
+  const [collegeData, setCollegeData] = useState<any>(null);
+  const [societyData, setSocietyData] = useState<any>(null);
+  const [eventsData, setEventsData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      getCollegeById(collegeId),
+      getSocietyById(societyId),
+      getEvents()
+    ]).then(([college, society, allEvents]) => {
+      setCollegeData(college || { name: 'Unknown College' });
+      setSocietyData(society || { name: 'Unknown Society' });
+      
+      const filteredEvents = allEvents.filter((e: any) => e.societyId === societyId);
+      setEventsData(filteredEvents);
+      setLoading(false);
+    });
+  }, [collegeId, societyId]);
+
+  if (loading) return <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-black dark:text-white" /></div>;
+
+  const formattedSocietyName = societyData?.name || "Society Detail";
+  const shortCollegeName = collegeData?.acronym || collegeData?.name?.substring(0, 3).toUpperCase() || "";
 
   const filteredEvents = activeCategory === "All" 
     ? eventsData 
-    : eventsData.filter(e => e.category === activeCategory);
+    : eventsData.filter((e) => e.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-500">
@@ -75,7 +52,7 @@ const SocietyDetail = () => {
         
         {/* Back Navigation */}
         <Link 
-          href={`/colleges/${collegeName}`}
+          href={`/colleges/${collegeId}`}
           className="inline-flex items-center gap-2 text-neutral-500 hover:text-black dark:hover:text-white transition-colors mb-8 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
@@ -123,7 +100,7 @@ const SocietyDetail = () => {
           <AnimatePresence mode="popLayout">
             {filteredEvents.map((event, i) => (
               <motion.div
-                key={event.id}
+                key={event._id || event.id}
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -134,12 +111,12 @@ const SocietyDetail = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
-                      {event.category}
+                      {event.category || 'General'}
                     </span>
                     <span className={`text-[10px] font-bold uppercase tracking-[0.2em] px-2 py-1 rounded-sm ${
-                      event.status === 'Upcoming' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400'
+                      (event.endDate && new Date(event.endDate) < new Date()) ? 'bg-neutral-200 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                     }`}>
-                      {event.status}
+                      {(event.endDate && new Date(event.endDate) < new Date()) ? 'Completed' : 'Upcoming'}
                     </span>
                   </div>
                   
@@ -153,26 +130,26 @@ const SocietyDetail = () => {
                   <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
                     <div className="flex items-center gap-1.5">
                       <Calendar size={16} />
-                      <span className="font-medium">{event.date}</span>
+                      <span className="font-medium">{event.startDate ? new Date(event.startDate).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' }) : 'TBA'}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Clock size={16} />
-                      <span className="font-medium">{event.time}</span>
+                      <span className="font-medium">{event.time || 'TBA'}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <MapPin size={16} />
-                      <span className="font-medium">{event.location}</span>
+                      <span className="font-medium">{event.location || 'TBA'}</span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex items-center md:border-l border-black/5 dark:border-white/10 md:pl-8 mt-4 md:mt-0">
-                  {event.status === 'Completed' ? (
+                  {(event.endDate && new Date(event.endDate) < new Date()) ? (
                     <button className="w-full md:w-auto px-8 py-4 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold tracking-wide hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100" disabled>
                       Closed
                     </button>
                   ) : (
-                    <Link href={`/colleges/${collegeName}/${societyNameSlug}/${event.id}`} className="w-full md:w-auto px-8 py-4 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold tracking-wide hover:scale-105 transition-transform text-center inline-block">
+                    <Link href={`/colleges/${collegeId}/${societyId}/${event._id || event.id}`} className="w-full md:w-auto px-8 py-4 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold tracking-wide hover:scale-105 transition-transform text-center inline-block">
                       View Details
                     </Link>
                   )}
