@@ -9,7 +9,7 @@ const bottomRow = [demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg
 
 const GallerySection = () => {
   return (
-    <section className="py-24 overflow-hidden bg-secondary/30">
+    <section className="py-24 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-8 text-center mb-12">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

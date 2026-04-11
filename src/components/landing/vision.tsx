@@ -16,7 +16,7 @@ const labels = ["Art Studio", "Creative Lab", "Design Hub", "Event Space", "Gall
 
 const VisionSection = () => {
   return (
-    <section className="py-24 bg-secondary/30">
+    <section className="py-24">
       <div className="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 gap-16 items-start">
         <div>
           <motion.div

@@ -1,11 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { ThemeToggle } from "../theme/toggle-theme";
 import Link from "next/link";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 
 const navLinks = [
-  { name: "Colleges", href: "#" },
+  { name: "Colleges", href: "/colleges" },
   { name: "Mentor", href: "#" },
   { name: "AI", href: "#" },
 ];
@@ -22,7 +23,7 @@ const Navbar = () => {
         
         {/* Logo - Large & Bold for B&W Theme */}
         <motion.div 
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.03 }}
           className="flex items-center"
         >
           <Link href="/" className="text-3xl font-display font-bold tracking-tighter text-black dark:text-white transition-colors">
@@ -57,13 +58,20 @@ const Navbar = () => {
             <ThemeToggle />
           </div>
           
-          <motion.button
-            whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.3)" }}
-            whileTap={{ scale: 0.98 }}
-            className="px-8 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black text-base font-bold transition-all border border-black dark:border-white hover:bg-neutral-800 dark:hover:bg-neutral-200"
-          >
-            Login
-          </motion.button>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <motion.button
+                whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.3)" }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black text-base font-bold transition-all border border-black dark:border-white hover:bg-neutral-800 dark:hover:bg-neutral-200"
+              >
+                Login
+              </motion.button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
       </div>
     </motion.nav>

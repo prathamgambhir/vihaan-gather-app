@@ -95,7 +95,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-zinc-200 flex flex-col md:flex-row items-center justify-end">
           <p className="text-sm font-body text-foreground opacity-80">
-            © 2024 . All rights reserved.
+            © 2026 . All rights reserved.
           </p>
         </div>
       </div>
