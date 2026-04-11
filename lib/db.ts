@@ -8,6 +8,8 @@ if (!MONGODB_URI) {
   );
 }
 
+const mongoUri = MONGODB_URI;
+
 declare global {
   var mongoose: { conn: typeof mongoose | null, promise: Promise<typeof mongoose> | null } | undefined;
 }
@@ -28,7 +30,7 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(mongoUri, opts).then((mongoose) => {
       return mongoose;
     });
   }
@@ -50,19 +52,19 @@ export interface ISociety {
   name: string;
   description?: string;
   logo?: string;
-  ownerId: string;
+  ownerId: mongoose.Types.ObjectId;
   isVerified?: boolean;
 }
 
 export interface ISocietyMember {
-  societyId: string;
-  userId: string;
+  societyId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   role?: string;
   joinedAt?: Date;
 }
 
 export interface IEvent {
-  societyId: string;
+  societyId: mongoose.Types.ObjectId;
   title: string;
   description?: string;
   calendlyEventId?: string;
@@ -73,7 +75,7 @@ export interface IEvent {
 }
 
 export interface IMentor {
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   expertise: string[];
   calendlyLink?: string;
   hourlyRate?: number;
@@ -81,15 +83,15 @@ export interface IMentor {
 }
 
 export interface IMentorshipSession {
-  mentorId: string;
-  menteeId: string;
+  mentorId: mongoose.Types.ObjectId;
+  menteeId: mongoose.Types.ObjectId;
   scheduledAt: Date;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   platformFee?: number;
 }
 
 export interface ISponsorship {
-  societyId: string;
+  societyId: mongoose.Types.ObjectId;
   sponsorName: string;
   amount: number;
   startDate?: Date;
@@ -97,7 +99,7 @@ export interface ISponsorship {
 }
 
 export interface ITransaction {
-  userId: string;
+  userId: mongoose.Types.ObjectId;
   type: string;
   amount: number;
   description?: string;

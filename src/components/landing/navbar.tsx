@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { ThemeToggle } from "../theme/toggle-theme";
 import Link from "next/link";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 
 const navLinks = [
   { name: "Colleges", href: "/colleges" },
@@ -12,6 +12,8 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { isSignedIn } = useUser();
+
   return (
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
@@ -58,7 +60,7 @@ const Navbar = () => {
             <ThemeToggle />
           </div>
           
-          <SignedOut>
+          {!isSignedIn ? (
             <SignInButton mode="modal">
               <motion.button
                 whileHover={{ y: -2, boxShadow: "0 10px 20px -10px rgba(0,0,0,0.3)" }}
@@ -68,10 +70,10 @@ const Navbar = () => {
                 Login
               </motion.button>
             </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
+          ) : null}
+          {isSignedIn ? (
+            <UserButton />
+          ) : null}
         </div>
       </div>
     </motion.nav>

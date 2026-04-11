@@ -57,6 +57,8 @@ body {
   --radius: 0.625rem;
 
   /* Font Variables */
+  --font-sans: var(--font-body);
+  --font-mono: "Consolas", "SFMono-Regular", monospace;
   --font-display: 'Instrument Serif', serif;
   --font-body: 'DM Sans', sans-serif;
   --background: oklch(1 0 0);
