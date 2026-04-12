@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Calendar, Star, ArrowRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
-import demoImg from "@/public/mentor1.jpeg"
+import Link from "next/link";
 
 // Replace these with actual paths or public URLs
 // const demoImg = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop";
@@ -108,11 +108,11 @@ const MentorPage = () => {
                   </span>
                 </div>
 
-                <button className="w-full group/btn flex items-center justify-center gap-2 py-4 bg-black text-white dark:bg-white dark:text-black rounded-2xl font-bold text-sm transition-all hover:opacity-90 active:scale-[0.98]">
+                <Link href={`/mentor/${mentor.name.toLowerCase().replace(/\\s+/g, '-')}`} className="w-full group/btn flex items-center justify-center gap-2 py-4 bg-black text-white dark:bg-white dark:text-black rounded-2xl font-bold text-sm transition-all hover:opacity-90 active:scale-[0.98]">
                   <Calendar size={16} />
                   Book 1-on-1 Session
                   <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
