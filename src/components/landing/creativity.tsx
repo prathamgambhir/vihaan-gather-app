@@ -2,17 +2,17 @@
 
 import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import art1 from "@/public/deadpool-pfp.png";
-import art9 from "@/public/deadpool-pfp.png";
-import art10 from "@/public/deadpool-pfp.png";
-import art2 from "@/public/deadpool-pfp.png";
+import mentor1 from "@/public/mentor1.jpeg";
+import mentor2 from "@/public/mentor2.jpeg";
+import mentor3 from "@/public/mentor3.jpeg";
+import mentor4 from "@/public/mentor4.jpeg";
 import Image from "next/image";
 
 const items = [
-  { img: art1, label: "Artnesia Gap" },
-  { img: art9, label: "Immortalise Works" },
-  { img: art10, label: "Creativity Class" },
-  { img: art2, label: "Celebrates Party" },
+  { img: mentor1, label: "Tech Mentorship" },
+  { img: mentor2, label: "Career Guidance" },
+  { img: mentor3, label: "Design Sessions" },
+  { img: mentor4, label: "Mock Interviews" },
 ];
 
 const CreativitySection = () => {

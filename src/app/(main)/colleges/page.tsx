@@ -7,12 +7,16 @@ import { useState, useEffect } from "react";
 import { getColleges } from "@/src/app/actions/societies";
 import { getEvents } from "@/src/app/actions/events";
 import { Loader2 } from "lucide-react";
-import demoImg from "@/public/deadpool-pfp.png";
 
 const CollegesPage = () => {
   const [colleges, setColleges] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const eventImages = [
+    "/event1.jpeg", "/event2.jpeg", "/event3.jpeg", "/event4.jpeg",
+    "/event5.jpeg", "/event6.jpeg", "/event7.jpeg", "/event8.jpeg"
+  ];
 
   useEffect(() => {
     Promise.all([getColleges(), getEvents()]).then(([cols, evts]) => {
@@ -98,7 +102,7 @@ const CollegesPage = () => {
                     {/* Image Container */}
                     <div className="relative aspect-[4/5] overflow-hidden bg-neutral-200 dark:bg-neutral-800">
                       <Image
-                        src={event.image && event.image.startsWith('http') ? event.image : demoImg}
+                        src={event.image && event.image.startsWith('http') ? event.image : eventImages[i % 8]}
                         alt={event.title}
                         fill
                         className="object-cover scale transition-all duration-700 scale-105 group-hover:scale-100"

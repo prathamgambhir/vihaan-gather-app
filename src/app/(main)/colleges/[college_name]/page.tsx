@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getCollegeById, getSocieties } from "@/src/app/actions/societies";
 
 const genres = ["All", "Technical", "Cultural", "Literary", "Music", "Dance", "Drama", "Sports"];
@@ -17,6 +18,11 @@ const CollegeDetail = () => {
   const [collegeDetails, setCollegeDetails] = useState<any>(null);
   const [societies, setSocieties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const societyImages = [
+    "/society1.jpeg", "/society2.jpeg", "/society3.jpeg", 
+    "/society4.jpeg", "/society5.jpeg", "/society6.jpeg"
+  ];
 
   useEffect(() => {
     Promise.all([getCollegeById(collegeId), getSocieties()]).then(([college, allSocieties]) => {
@@ -105,10 +111,19 @@ const CollegeDetail = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3, delay: i * 0.02 }}
-                className="group p-8 rounded-3xl border border-black/5 dark:border-white/10 bg-neutral-50 dark:bg-neutral-900/40 hover:bg-white dark:hover:bg-black hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all duration-500"
+                className="group relative bg-neutral-50 dark:bg-neutral-900/40 rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 hover:bg-white dark:hover:bg-black shadow-sm hover:shadow-2xl transition-all duration-500"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
+                <div className="relative h-48 w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                  <Image 
+                    src={society.logo && society.logo.startsWith('http') ? society.logo : societyImages[i % 6]} 
+                    alt={society.name} 
+                    fill 
+                    className="object-cover transition-all duration-700 group-hover:scale-105" 
+                  />
+                </div>
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
                     {society.category || 'General'}
                   </span>
                   {society.website && (
@@ -134,6 +149,7 @@ const CollegeDetail = () => {
                   <Link href={`/colleges/${collegeId}/${society._id || society.id}`} className="text-xs font-bold uppercase tracking-widest text-black dark:text-white hover:underline">
                     View Events →
                   </Link>
+                </div>
                 </div>
               </motion.div>
             ))}

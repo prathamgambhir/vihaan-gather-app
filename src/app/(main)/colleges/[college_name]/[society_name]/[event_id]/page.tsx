@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Calendar, MapPin, Trophy, Users, ArrowUpRight, Clock, ArrowLeft, Info, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { getEventById } from "@/src/app/actions/events";
 import { getSocietyById } from "@/src/app/actions/societies";
 
@@ -213,6 +214,16 @@ export default function EventDetailPage() {
            transition={{ duration: 0.6 }}
            className="mb-12"
         >
+          {/* Banner Image */}
+          <div className="relative w-full h-[300px] md:h-[400px] mb-12 rounded-[2rem] overflow-hidden">
+             <Image 
+               src={eventData.image && eventData.image.startsWith('http') ? eventData.image : "/event" + ((eventDetails.title.length % 8) + 1) + ".jpeg"} 
+               fill 
+               alt={eventDetails.title} 
+               className="object-cover" 
+             />
+          </div>
+
           <div className="flex gap-3 mb-6">
             <span className="px-4 py-1.5 bg-black text-white dark:bg-white dark:text-black text-xs font-bold uppercase tracking-widest rounded-full">
               {eventDetails.category}

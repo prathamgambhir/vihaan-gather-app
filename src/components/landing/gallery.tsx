@@ -1,11 +1,16 @@
 "use client"
 
 import { motion } from "motion/react";
-import demoimg from "@/public/deadpool-pfp.png";
+import mentor1 from "@/public/mentor1.jpeg";
+import mentor2 from "@/public/mentor2.jpeg";
+import mentor3 from "@/public/mentor3.jpeg";
+import mentor4 from "@/public/mentor4.jpeg";
+import mentor5 from "@/public/mentor5.jpeg";
+import mentor6 from "@/public/mentor6.jpeg";
 import Image from "next/image";
 
-const topRow = [demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg];
-const bottomRow = [demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg, demoimg];
+const topRow = [mentor1, mentor2, mentor3, mentor4, mentor5, mentor6, mentor1, mentor2, mentor3];
+const bottomRow = [mentor4, mentor5, mentor6, mentor1, mentor2, mentor3, mentor4, mentor5, mentor6];
 
 const GallerySection = () => {
   return (
@@ -17,9 +22,9 @@ const GallerySection = () => {
           viewport={{ once: true }}
           className="text-4xl md:text-6xl font-display text-foreground leading-tight"
         >
-          You will find yourself
+          Find your future
           <br />
-          among us
+          among those who have built it
         </motion.h2>
         <motion.p
           initial={{ opacity: 0 }}

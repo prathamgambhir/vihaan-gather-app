@@ -1,15 +1,19 @@
 "use client"
 
 import { motion } from "motion/react";
-import demoimg from "@/public/deadpool-pfp.png";
+import society1 from "@/public/society1.jpeg";
+import society2 from "@/public/society2.jpeg";
+import society3 from "@/public/society3.jpeg";
+import society4 from "@/public/society4.jpeg";
+import society5 from "@/public/society5.jpeg";
 import Image from "next/image";
 
 const cards = [
-  { img: demoimg, rotate: -15 },
-  { img: demoimg, rotate: -8 },
-  { img: demoimg, rotate: 0 },
-  { img: demoimg, rotate: 8 },
-  { img: demoimg, rotate: 15 },
+  { img: society1, rotate: -15 },
+  { img: society2, rotate: -8 },
+  { img: society3, rotate: 0 },
+  { img: society4, rotate: 8 },
+  { img: society5, rotate: 15 },
 ];
 
 const MarketplaceSection = () => {

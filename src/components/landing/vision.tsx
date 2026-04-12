@@ -3,15 +3,15 @@
 import { motion } from "motion/react";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import art3 from "@/public/deadpool-pfp.png";
-import art4 from "@/public/deadpool-pfp.png";
-import art5 from "@/public/deadpool-pfp.png";
-import art6 from "@/public/deadpool-pfp.png";
-import art1 from "@/public/deadpool-pfp.png";
-import art2 from "@/public/deadpool-pfp.png";
+import society1 from "@/public/society1.jpeg";
+import society2 from "@/public/society2.jpeg";
+import society3 from "@/public/society3.jpeg";
+import society4 from "@/public/society4.jpeg";
+import society5 from "@/public/society5.jpeg";
+import society6 from "@/public/society6.jpeg";
 
 const icons = [Eye];
-const galleryImages = [art3, art4, art5, art6, art1, art2];
+const galleryImages = [society1, society2, society3, society4, society5, society6];
 const labels = ["Art Studio", "Creative Lab", "Design Hub", "Event Space", "Gallery", "Workshop"];
 
 const VisionSection = () => {

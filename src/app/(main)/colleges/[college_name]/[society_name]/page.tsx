@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Calendar, MapPin, Clock, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { getCollegeById, getSocietyById } from "@/src/app/actions/societies";
 import { getEvents } from "@/src/app/actions/events";
 
@@ -21,6 +22,11 @@ const SocietyDetail = () => {
   const [societyData, setSocietyData] = useState<any>(null);
   const [eventsData, setEventsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const eventImages = [
+    "/event1.jpeg", "/event2.jpeg", "/event3.jpeg", "/event4.jpeg",
+    "/event5.jpeg", "/event6.jpeg", "/event7.jpeg", "/event8.jpeg"
+  ];
 
   useEffect(() => {
     Promise.all([
@@ -108,7 +114,15 @@ const SocietyDetail = () => {
                 transition={{ duration: 0.3, delay: i * 0.05 }}
                 className="group flex flex-col md:flex-row gap-6 p-8 rounded-3xl border border-black/5 dark:border-white/10 bg-neutral-50 dark:bg-neutral-900/40 hover:bg-white dark:hover:bg-black hover:shadow-2xl hover:shadow-black/5 dark:hover:shadow-white/5 transition-all duration-500"
               >
-                <div className="flex-1">
+                <div className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden rounded-2xl flex-shrink-0">
+                  <Image 
+                    src={event.image && event.image.startsWith('http') ? event.image : eventImages[i % 8]} 
+                    alt={event.title} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                </div>
+                <div className="flex-1 py-2">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
                       {event.category || 'General'}

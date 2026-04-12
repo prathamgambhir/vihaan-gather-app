@@ -1,8 +1,8 @@
 "use client"
 import { motion } from "motion/react";
 import Image from "next/image";
-import art8 from "@/public/deadpool-pfp.png";
-import art9 from "@/public/deadpool-pfp.png";
+import event1 from "@/public/event1.jpeg";
+import event2 from "@/public/event2.jpeg";
 
 const StorySection = () => {
   return (
@@ -41,7 +41,7 @@ const StorySection = () => {
             <div className="p-6">
               <span className="text-xs font-body text-muted-foreground">● Play Video</span>
             </div>
-            <Image src={art8} alt="Story" className="w-full h-[260px] object-cover" loading="lazy" />
+            <Image src={event1} alt="Story" className="w-full h-[260px] object-cover" loading="lazy" />
             <div className="p-6">
               <h3 className="text-xl font-display text-foreground mb-2">Connect, Create, Commerce</h3>
               <p className="text-sm font-body text-muted-foreground mb-4">
@@ -60,7 +60,7 @@ const StorySection = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="bg-card rounded-3xl overflow-hidden shadow-sm border border-border"
           >
-            <Image src={art9} alt="Commerce" className="w-full h-[300px] object-cover" loading="lazy" />
+            <Image src={event2} alt="Commerce" className="w-full h-[300px] object-cover" loading="lazy" />
             <div className="p-6">
               <h3 className="text-xl font-display text-foreground mb-2">Where Art Breathes Commerce</h3>
               <p className="text-sm font-body text-muted-foreground mb-4">
