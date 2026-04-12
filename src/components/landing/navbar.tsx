@@ -7,8 +7,8 @@ import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 
 const navLinks = [
   { name: "Colleges", href: "/colleges" },
-  { name: "Mentor", href: "#" },
-  { name: "AI", href: "#" },
+  { name: "Mentor", href: "/mentor" },
+  { name: "AI", href: "/ai" },
 ];
 
 const Navbar = () => {

@@ -8,9 +8,9 @@ export default function CollegesLayout({
 }>) {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
